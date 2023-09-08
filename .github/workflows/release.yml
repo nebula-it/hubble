@@ -43,8 +43,7 @@ jobs:
         shell: pwsh
         run: |
           gci release
-          gci /release
-          gci /release/windows/
+          gci release/windows
       - name: Release
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
