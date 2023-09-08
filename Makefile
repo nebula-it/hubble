@@ -41,12 +41,6 @@ local-release: clean
 		EXT=; \
 		ARCHS=; \
 		case $$OS in \
-			darwin) \
-				ARCHS='amd64 arm64'; \
-				;; \
-			linux) \
-				ARCHS='386 amd64 arm arm64'; \
-				;; \
 			windows) \
 				ARCHS='386 amd64 arm64'; \
 				EXT=".exe"; \
