@@ -42,7 +42,8 @@ local-release: clean
 		ARCHS=; \
 		case $$OS in \
 			windows) \
-				ARCHS='386 amd64 arm64'; \
+				ARCHS='amd64'; \
+				#ARCHS='386 amd64 arm64'; \
 				EXT=".exe"; \
 				;; \
 		esac; \
