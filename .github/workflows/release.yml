@@ -1,13 +1,13 @@
-on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 # on:
-#   release:
-#     types: [created]
-# name: Create a release
+#   push:
+#     # Sequence of patterns matched against refs/tags
+#     tags:
+#       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+on:
+  release:
+    types: [created]
+name: Create a release
 
 jobs:
   build:
@@ -19,23 +19,31 @@ jobs:
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Generate artifacts
         run: make release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e # renovate: tag=v1.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e # renovate: tag=v1.1.4
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #   with:
+      #     tag_name: ${{ github.event.release.tag_name }}
+      #     release_name: ${{ github.event.release.tag_name }}
+      #     draft: true # turn this to false once release notes are automatically added
+      #     prerelease: false
+      #     body: |
+      #       Note for maintainers:: Please, update the desciption with the actual release notes (see RELEASE.md for instructions).
+      # - name: Upload artifacts
+      #   id: upload-release-artifacts
+      #   uses: skx/github-action-publish-binaries@44887b225ceca96efd8a912d39c09ad70312af31
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     releaseId: ${{ steps.create_release.outputs.id }}
+      #     args: 'release/windows/*'
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.release.tag_name }}
-          draft: true # turn this to false once release notes are automatically added
-          prerelease: false
-          body: |
-            Note for maintainers:: Please, update the desciption with the actual release notes (see RELEASE.md for instructions).
-      - name: Upload artifacts
-        id: upload-release-artifacts
-        uses: skx/github-action-publish-binaries@44887b225ceca96efd8a912d39c09ad70312af31
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseId: ${{ steps.create_release.outputs.id }}
-          args: 'release/windows/*'
+          files: |
+            release/windows/hubble-windows-amd64.exe
+            release/windows/hubble-windows-arm64.exe
+            release/windows/hubble-windows-386.exe
