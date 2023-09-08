@@ -42,15 +42,14 @@ local-release: clean
 		ARCHS=; \
 		case $$OS in \
 			windows) \
-				ARCHS='amd64'; \
-				#ARCHS='386 amd64 arm64'; \
+				ARCHS='386 amd64 arm64'; \
 				EXT=".exe"; \
 				;; \
 		esac; \
 		for ARCH in $$ARCHS; do \
 			echo Building release binary for $$OS/$$ARCH...; \
 			test -d release/$$OS/$$ARCH|| mkdir -p release/$$OS/$$ARCH; \
-			env GOOS=$$OS GOARCH=$$ARCH $(GO_BUILD) $(if $(GO_TAGS),-tags $(GO_TAGS)) -ldflags "-w -s -X 'github.com/cilium/hubble/pkg.Version=${VERSION}'" -o release/$$OS/$$ARCH/$(TARGET)$$EXT; \
+			env GOOS=$$OS GOARCH=$$ARCH $(GO_BUILD) $(if $(GO_TAGS),-tags $(GO_TAGS)) -ldflags "-w -s -X 'github.com/cilium/hubble/pkg.Version=${VERSION}'" -o release/$$OS/$$ARCH/$(TARGET)-$$ARCH$$EXT; \
 		done; \
 	done;
 
