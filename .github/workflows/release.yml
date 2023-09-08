@@ -42,13 +42,13 @@ jobs:
       - name: Build new image
         shell: pwsh
         run: |
-          gci release
-          gci release/windows
+          ls release
+          ls release/windows
       - name: Release
         uses: softprops/action-gh-release@v1
-        # if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             release/windows/hubble-windows-amd64.exe
-            release/windows/hubble-windows-arm64.exe
-            release/windows/hubble-windows-386.exe
+            # release/windows/hubble-windows-arm64.exe
+            # release/windows/hubble-windows-386.exe
