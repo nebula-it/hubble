@@ -39,6 +39,12 @@ jobs:
       #   with:
       #     releaseId: ${{ steps.create_release.outputs.id }}
       #     args: 'release/windows/*'
+      - name: Build new image
+        shell: pwsh
+        run: |
+          gci release
+          gci /release
+          gci /release/windows/
       - name: Release
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
